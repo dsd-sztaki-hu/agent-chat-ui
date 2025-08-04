@@ -178,7 +178,6 @@ export function AssistantMessage({
                   ))}
               </>
             )}
-qwe
             {message && (
               <CustomComponent
                 message={message}
