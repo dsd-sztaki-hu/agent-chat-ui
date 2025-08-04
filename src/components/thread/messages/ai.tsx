@@ -4,7 +4,7 @@ import { AIMessage, Checkpoint, Message } from "@langchain/langgraph-sdk";
 import { getContentString } from "../utils";
 import { BranchSwitcher, CommandBar } from "./shared";
 import { MarkdownText } from "../markdown-text";
-import { LoadExternalComponent } from "@langchain/langgraph-sdk/react-ui";
+import { LoadExternalComponent, UIMessage } from "@langchain/langgraph-sdk/react-ui";
 import { cn } from "@/lib/utils";
 import { ToolCalls, ToolResult } from "./tool-calls";
 import { MessageContentComplex } from "@langchain/core/messages";
@@ -14,6 +14,9 @@ import { ThreadView } from "../agent-inbox";
 import { useQueryState, parseAsBoolean } from "nuqs";
 import { GenericInterruptView } from "./generic-interrupt";
 import { useArtifact } from "../artifact";
+import { isInterruptedUiMessage } from "@/components/dsd/interrupt";
+import { clientComponents } from "@/components/dsd/client-components";
+
 
 function CustomComponent({
   message,
@@ -37,6 +40,7 @@ function CustomComponent({
           stream={thread}
           message={customComponent}
           meta={{ ui: customComponent, artifact }}
+          components={clientComponents}
         />
       ))}
     </Fragment>
@@ -92,6 +96,7 @@ function Interrupt({
     </>
   );
 }
+
 
 export function AssistantMessage({
   message,
@@ -173,18 +178,21 @@ export function AssistantMessage({
                   ))}
               </>
             )}
-
+qwe
             {message && (
               <CustomComponent
                 message={message}
                 thread={thread}
               />
             )}
-            <Interrupt
-              interruptValue={threadInterrupt?.value}
-              isLastMessage={isLastMessage}
-              hasNoAIOrToolMessages={hasNoAIOrToolMessages}
-            />
+            {
+              !isInterruptedUiMessage(threadInterrupt?.value) &&
+                <Interrupt
+                  interruptValue={threadInterrupt?.value}
+                  isLastMessage={isLastMessage}
+                  hasNoAIOrToolMessages={hasNoAIOrToolMessages}
+                />
+            }
             <div
               className={cn(
                 "mr-auto flex items-center gap-2 transition-opacity",
