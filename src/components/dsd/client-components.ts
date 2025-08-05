@@ -1,3 +1,6 @@
+'use client'
+import { CrateEditor } from "@/components/dsd/CrateEditor";
+
 /**
  * Maps component names to their React implementations.
  *
@@ -16,4 +19,5 @@
  */
 export const clientComponents = {
   // "some_component_name": SomeComponentImplementation
+  "crate_editor": CrateEditor
 };
